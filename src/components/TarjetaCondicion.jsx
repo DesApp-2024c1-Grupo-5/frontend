@@ -59,12 +59,10 @@ const TarjetaCondicion = ({
   };
 
   const handleChange = (value) => {
-    // Aquí manejas el cambio de valor
     console.log("Valor seleccionado:", value);
-    // Puedes realizar acciones adicionales según sea necesario
   };
 
-  return ( 
+  return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, marginBottom: 1, padding: 1, border: '1px solid grey', borderRadius: 2 }}>
       {condicion === "CANT_APROBADAS" ? (
         <Box>
@@ -76,7 +74,7 @@ const TarjetaCondicion = ({
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Typography variant="body1" sx={{ overflow: 'hidden', textAlign: 'center', justifyContent: 'center', textOverflow: 'ellipsis' }}>{condicion}</Typography>
             </Box>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <TextField type="number" variant="outlined" />
             </Box>
           </Box>
@@ -89,7 +87,7 @@ const TarjetaCondicion = ({
             <Typography variant="body2" sx={{ fontWeight: 'bold', width: '25ch', textAlign: 'center' }}>Cantidad</Typography>
             <Typography variant="body2" sx={{ fontWeight: 'bold', width: '25ch', textAlign: 'center' }}>Va en carrera</Typography>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', gap:2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', gap: 2 }}>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Typography variant="body1" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{condicion}</Typography>
             </Box>
@@ -106,7 +104,7 @@ const TarjetaCondicion = ({
               <TextField type="number" variant="outlined" sx={{ width: '100%' }} disabled={deshabilitarCampoNumerico} />
             </Box>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Checkbox checked={checkboxValue} onChange={onCheckboxChange} />
+              <Checkbox checked={checkboxValue} onChange={(e) => onCheckboxChange(e.target.checked)} />
             </Box>
           </Box>
         </Box>
