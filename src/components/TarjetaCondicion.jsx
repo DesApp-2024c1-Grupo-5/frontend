@@ -3,18 +3,27 @@ import PropTypes from 'prop-types';
 import { Box, Typography, TextField, Checkbox, Autocomplete } from '@mui/material';
 
 const listadoSubjectData = [
-  { id_materia: 149, id_carrera: 5, anio: 1 },
-  { id_materia: 152, id_carrera: 5, anio: 1 },
-  { id_materia: 151, id_carrera: 5, anio: 1 },
-  { id_materia: 443, id_carrera: 5, anio: 1 },
+    { id_materia: 152, id_carrera: 5, anio: 1 },
+    { id_materia: 151, id_carrera: 5, anio: 1 },
+    { id_materia: 443, id_carrera: 5, anio: 1 },
+    { id_materia: 153, id_carrera: 5, anio: 1 },
+    { id_materia: 160, id_carrera: 5, anio: 1 },
+    { id_materia: 444, id_carrera: 5, anio: 1 },
+    { id_materia: 149, id_carrera: 31, anio: 1 },
+    { id_materia: 152, id_carrera: 31, anio: 1 },
+    { id_materia: 151, id_carrera: 31, anio: 1 },
+    { id_materia: 150, id_carrera: 31, anio: 1 },
+    { id_materia: 153, id_carrera: 31, anio: 1 },
+    { id_materia: 160, id_carrera: 31, anio: 1 },
+    { id_materia: 444, id_carrera: 31, anio: 1 },
+    { id_materia: 41, id_carrera: 31, anio: 1 }
 ];
 
 const devolucionCarreras = [
   {
-    careerId: 1,
-    unahurSubjects: [{ year: 1 }, { year: 4 }],
-    englishLevels: [{ year: 3 }, { year: 4 }],
-    suggestionThresholdRegularizedSubjects: 4
+    careerId: 31, 
+    unahurSubjects: [{year:1}], englishLevels: [{year:2}, {year:3}], 
+    suggestionThresholdRegularizedSubjects: 3 
   },
   {
     careerId: 5,
