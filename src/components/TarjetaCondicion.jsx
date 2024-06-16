@@ -1,65 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Select, MenuItem, TextField, Checkbox, Autocomplete } from '@mui/material';
+import { Box, Typography, TextField, Checkbox, Autocomplete } from '@mui/material';
+
+const listadoSubjectData = [
+  { id_materia: 149, id_carrera: 5, anio: 1 },
+  { id_materia: 152, id_carrera: 5, anio: 1 },
+  { id_materia: 151, id_carrera: 5, anio: 1 },
+  { id_materia: 443, id_carrera: 5, anio: 1 },
+];
+
+const devolucionCarreras = [
+  {
+    careerId: 1,
+    unahurSubjects: [{ year: 1 }, { year: 4 }],
+    englishLevels: [{ year: 3 }, { year: 4 }],
+    suggestionThresholdRegularizedSubjects: 4
+  },
+  {
+    careerId: 5,
+    unahurSubjects: [{ year: 1 }],
+    englishLevels: [{ year: 2 }, { year: 3 }],
+    suggestionThresholdRegularizedSubjects: 3
+  }
+];
 
 const TarjetaCondicion = ({
   condicion,
-  devolucionCarreras,
-  listadoSubjectData,
   onCheckboxChange,
   checkboxValue,
   deshabilitarCampoNumerico
 }) => {
-  console.log("Renderizando TarjetaCondicion con la condición:", condicion);
-  console.log("Devolución Carreras:", devolucionCarreras);
-  console.log("Listado Subject Data:", listadoSubjectData);
-
   const renderOptions = () => {
-    if (condicion === "EN_CARRERA") {
-      console.log("Renderizando opciones para EN_CARRERA");
-      return (
-        <Autocomplete
-          options={devolucionCarreras.map((carrera) => carrera.careerId)}
-          renderInput={(params) => <TextField {...params} label="Carreras" variant="outlined" fullWidth />}
-          sx={{ width: '100%' }} // Ajustamos el ancho del Autocomplete
-        />
-      );
-    } else if (condicion === "MATERIAS_PENDIENTES") {
-      console.log("Renderizando opciones para MATERIAS_PENDIENTES");
-      return listadoSubjectData.map((subject) => (
-        <MenuItem key={subject.id_materia} value={subject.id_materia}>
-          Materia {subject.id_materia}
-        </MenuItem>
-      ));
-    } else if (condicion === "MATERIAS_NO_PENDIENTES") {
-      console.log("Renderizando opciones para MATERIAS_NO_PENDIENTES");
-      return (
-        <Autocomplete
-          options={listadoSubjectData.map((subject) => `Materia ${subject.id_materia}`)}
-          renderInput={(params) => <TextField {...params} label="Materias" variant="outlined" fullWidth />}
-          sx={{ width: '100%' }} // Ajustamos el ancho del Autocomplete
-        />
-      );
-    } else {
-      return (
-        <>
-          <MenuItem value="SIEMPRE">Siempre</MenuItem>
-          <MenuItem value="NUNCA">Nunca</MenuItem>
-          <MenuItem value="EN_CARRERA">En Carrera</MenuItem>
-          <MenuItem value="MATERIAS_PENDIENTES">Materias Pendientes</MenuItem>
-          <MenuItem value="MATERIAS_NO_PENDIENTES">Materias No Pendientes</MenuItem>
-          <MenuItem value="MATERIAS_COMUNES">Materias Comunes</MenuItem>
-          <MenuItem value="CANT_APROBADAS">Cantidad de Materias Aprobadas</MenuItem>
-          <MenuItem value="FINALES_PENDIENTES">Finales Pendientes</MenuItem>
-          <MenuItem value="LIMITE_FINALES_PENDIENTES">Límite de Finales Pendientes</MenuItem>
-          <MenuItem value="ORIENTACION">Orientación</MenuItem>
-        </>
-      );
+    switch (condicion) {
+      case "EN_CARRERA":
+        return (
+          <Autocomplete
+            options={devolucionCarreras.map((carrera) => carrera.careerId)}
+            renderInput={(params) => <TextField {...params} label="Carreras" variant="outlined" fullWidth />}
+            sx={{ width: '100%' }}
+          />
+        );
+      case "MATERIAS_PENDIENTES":
+      case "MATERIAS_NO_PENDIENTES":
+        return (
+          <Autocomplete
+            options={listadoSubjectData.map((materia) => materia.id_materia)}
+            getOptionLabel={(option) => `Materia ${option}`}
+            renderOption={(props, option) => <li {...props}>{`Materia ${option}`}</li>}
+            renderInput={(params) => <TextField {...params} label="Materias" variant="outlined" fullWidth />}
+            sx={{ width: '100%' }}
+          />
+        );
+      default:
+        return null;
     }
-  };
-
-  const handleChange = (value) => {
-    console.log("Valor seleccionado:", value);
   };
 
   return (
@@ -92,12 +86,10 @@ const TarjetaCondicion = ({
               <Typography variant="body1" sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{condicion}</Typography>
             </Box>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              {condicion !== "MATERIAS_NO_PENDIENTES" && condicion !== "EN_CARRERA" ? (
-                <Select value={condicion} onChange={(e) => handleChange(e.target.value)} sx={{ width: '100%' }}>
-                  {renderOptions()}
-                </Select>
-              ) : (
+              {["MATERIAS_PENDIENTES", "MATERIAS_NO_PENDIENTES", "EN_CARRERA"].includes(condicion) ? (
                 renderOptions()
+              ) : (
+                <TextField disabled value="N/A" variant="outlined" fullWidth />
               )}
             </Box>
             <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -115,8 +107,6 @@ const TarjetaCondicion = ({
 
 TarjetaCondicion.propTypes = {
   condicion: PropTypes.string.isRequired,
-  devolucionCarreras: PropTypes.array.isRequired,
-  listadoSubjectData: PropTypes.array.isRequired,
   onCheckboxChange: PropTypes.func.isRequired,
   checkboxValue: PropTypes.bool.isRequired,
   deshabilitarCampoNumerico: PropTypes.bool.isRequired

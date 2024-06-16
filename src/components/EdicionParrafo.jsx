@@ -4,27 +4,6 @@ import TarjetaCondicion from './TarjetaCondicion';
 import Stack from '@mui/material/Stack';
 import '../styles/SelectMultipleAR.css';
 
-const listadoSubjectDat = [
-    { id_materia: 149, id_carrera: 5, anio: 1 },
-    { id_materia: 152, id_carrera: 5, anio: 1 },
-    { id_materia: 151, id_carrera: 5, anio: 1 },
-    { id_materia: 443, id_carrera: 5, anio: 1 },
-    
-];
-
-const devolucionCarrera = [
-    { 
-        careerId: 1, 
-        unahurSubjects: [{year:1},{year:4}], englishLevels: [{year:3},{year:4}], 
-        suggestionThresholdRegularizedSubjects: 4 
-    },
-    { 
-        careerId: 5, 
-        unahurSubjects: [{year: 1}], englishLevels: [{year:2}, {year:3}], 
-        suggestionThresholdRegularizedSubjects: 3
-    }
-];
-
 const EdicionParrafo = ({ initialClave, initialTexto, onSave, onCancel }) => {
   const [clave, setClave] = useState(initialClave);
   const [texto, setTexto] = useState(initialTexto);
@@ -79,13 +58,10 @@ const EdicionParrafo = ({ initialClave, initialTexto, onSave, onCancel }) => {
     if (autoCompleteOptionsDisabled && ['MATERIAS_PENDIENTES', 'MATERIAS_NO_PENDIENTES'].includes(option)) {
       return true;
     }
-    if (desabilitarResto && !['SIEMPRE', 'NUNCA', 'FINALES_PENDIENTES', 'LIMITE_FINALES_PENDIENTIENTES', 'ORIENTACION'].includes(option)) {
+    if (desabilitarSiempre && option !== 'SIEMPRE') {
       return true;
     }
-    if (desabilitarSiempre && option === 'SIEMPRE') {
-      return true;
-    }
-    if (desabilitarNunca && option === 'NUNCA') {
+    if (desabilitarNunca && option !== 'NUNCA') {
       return true;
     }
     return false;
@@ -112,8 +88,6 @@ const EdicionParrafo = ({ initialClave, initialTexto, onSave, onCancel }) => {
               <TarjetaCondicion
                 key={index}
                 condicion={condicion}
-                devolucionCarreras={devolucionCarrera}
-                listadoSubjectData={listadoSubjectDat.filter(materia => materia.id_carrera === devolucionCarrera[0].careerId)} // Filtrar materias por carrera seleccionada
                 onCheckboxChange={(checked) => handleCheckboxChange(index, checked)}
                 checkboxValue={checkboxValues[index]}
                 deshabilitarCampoNumerico={!checkboxValues[index]}
