@@ -47,19 +47,21 @@ const TarjetaCondicion = ({
             options={devolucionCarreras.map((carrera) => carrera.careerId)}
             renderInput={(params) => <TextField {...params} label="Carreras" variant="outlined" fullWidth />}
             sx={{ width: '100%' }}
+            getOptionLabel={(option) => `Carrera ${option}`}
+            
           />
         );
-      case "MATERIAS_PENDIENTES":
-      case "MATERIAS_NO_PENDIENTES":
-        return (
-          <Autocomplete
+       case "MATERIAS_PENDIENTES":
+       case "MATERIAS_NO_PENDIENTES":
+         return (
+           <Autocomplete
             options={listadoSubjectData.map((materia) => materia.id_materia)}
-            getOptionLabel={(option) => `Materia ${option}`}
-            renderOption={(props, option) => <li {...props}>{`Materia ${option}`}</li>}
-            renderInput={(params) => <TextField {...params} label="Materias" variant="outlined" fullWidth />}
-            sx={{ width: '100%' }}
-          />
-        );
+             getOptionLabel={(option) => `Materia ${option}`}
+             renderOption={(props, option) => <li {...props}>{`Materia ${option}`}</li>}
+             renderInput={(params) => <TextField {...params} label="Materias" variant="outlined" fullWidth />}
+             sx={{ width: '100%' }}
+           />
+         );
       default:
         return null;
     }
