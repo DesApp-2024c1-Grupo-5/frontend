@@ -1,23 +1,8 @@
-import React from 'react';
+import React , { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, TextField, Checkbox, Autocomplete } from '@mui/material';
+import listadoSubjectData from '../services/listadoSubjectData';
 
-const listadoSubjectData = [
-    { id_materia: 152, id_carrera: 5, anio: 1 },
-    { id_materia: 151, id_carrera: 5, anio: 1 },
-    { id_materia: 443, id_carrera: 5, anio: 1 },
-    { id_materia: 153, id_carrera: 5, anio: 1 },
-    { id_materia: 160, id_carrera: 5, anio: 1 },
-    { id_materia: 444, id_carrera: 5, anio: 1 },
-    { id_materia: 149, id_carrera: 31, anio: 1 },
-    { id_materia: 152, id_carrera: 31, anio: 1 },
-    { id_materia: 151, id_carrera: 31, anio: 1 },
-    { id_materia: 150, id_carrera: 31, anio: 1 },
-    { id_materia: 153, id_carrera: 31, anio: 1 },
-    { id_materia: 160, id_carrera: 31, anio: 1 },
-    { id_materia: 444, id_carrera: 31, anio: 1 },
-    { id_materia: 41, id_carrera: 31, anio: 1 }
-];
 
 const devolucionCarreras = [
   {
@@ -33,12 +18,34 @@ const devolucionCarreras = [
   }
 ];
 
+
+
 const TarjetaCondicion = ({
   condicion,
   onCheckboxChange,
   checkboxValue,
   deshabilitarCampoNumerico
 }) => {
+  //console.log(listadoSubjectData);
+  const [ListaFiltrada, setCamposList] = useState([]);
+    useEffect(() => {
+      const lista = listadoSubjectData
+          .filter(c => c.id_carrera === 5 )
+          .map(c => ({
+              label: `Materia ${c.id_materia}`,
+              value: c.id_materia
+            }));
+      const eliminarDuplicados = (arr) => {
+          const map = new Map();
+          return arr.filter(item => !map.has(item.value) && map.set(item.value, true));
+      };
+
+      const listaSinDuplicados = eliminarDuplicados(lista);
+
+      setCamposList(listaSinDuplicados);
+      
+    },[]);
+
   const renderOptions = () => {
     switch (condicion) {
       case "EN_CARRERA":
@@ -55,7 +62,7 @@ const TarjetaCondicion = ({
        case "MATERIAS_NO_PENDIENTES":
          return (
            <Autocomplete
-            options={listadoSubjectData.map((materia) => materia.id_materia)}
+            options={ListaFiltrada}
              getOptionLabel={(option) => `Materia ${option}`}
              renderOption={(props, option) => <li {...props}>{`Materia ${option}`}</li>}
              renderInput={(params) => <TextField {...params} label="Materias" variant="outlined" fullWidth />}
