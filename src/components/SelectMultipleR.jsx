@@ -28,7 +28,7 @@ export default function SelectMultipleR({ options, onSelect, className, placehol
         );
 
         onSelect(value);
-        console.log(value)
+        //console.log(value)
     };
 
     return (

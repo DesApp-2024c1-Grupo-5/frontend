@@ -5,9 +5,9 @@ import { Box } from '@mui/material';
 import BuildIcon from '@mui/icons-material/Build';
 import ListIcon from '@mui/icons-material/List';
 import '../styles/ConfiguracionCarreras.css';
-import listadoCarreras from '../services/listadoCarreras';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addCarrera } from '../redux/carreraSlice';
+import { getAllCareer } from '../services/CareerService';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -18,13 +18,32 @@ function SeleccionCarrera() {
     const navigate = useNavigate();
     const [carreras, setCarrerasList] = useState([]);
     const [configButton, setConfigButton] = useState("");
+    const [message, setMessage] = useState({ codigo: 0, msg: "" });
 
     useEffect(() => {
-        const lista = listadoCarreras.map(c => ({
-          label: `Carrera ${c.careerId}`,
-          value: { v: c.careerId, l: `Carrera ${c.careerId}` }
-        }));
-          setCarrerasList(lista);
+        setMessage({});
+        const obtenerCarreras = async () => {
+            const carreras = await getAllCareer();
+            if (carreras.status === 200) {
+                const career = carreras.data;
+                setMessage({
+                    code: carreras.status,
+                    msg: `Se han traido todas las carreras.`
+                })
+                const lista = career.allCareers.map(c => ({
+                    label: `Carrera ${c.careerId}`,
+                    value: { v: c.careerId, l: `Carrera ${c.careerId}` }
+                }));
+                setCarrerasList(lista);
+            } else {
+                setMessage({
+                    code: carreras.status,
+                    msg: carreras.statusText
+                })
+            }
+        }
+        obtenerCarreras();
+        
       }, [])
 
 

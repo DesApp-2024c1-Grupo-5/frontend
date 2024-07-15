@@ -11,7 +11,7 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import '../styles/ConfiguracionCarreras.css';
 import PanelConfiguradorGral from '../components/PanelConfiguradorGral'
 import MateriasEspeciales from '../components/MateriasEspeciales';
-import { updateOneCareer, getCurrentConfigCareer } from '../services/CarrerService';
+import { updateOneCareer, getCurrentConfigCareer } from '../services/CareerService';
 
 function ConfiguracionCarrera() {
     //recupero el store
@@ -22,28 +22,32 @@ function ConfiguracionCarrera() {
     const [message, setMessage] = useState({codigo: 0, msg:""});
 
     const toggleEdit = async() => {
-        setIsEdit((prevState) => !prevState); // Cambia el estado de edición
-        //llamada al BE
+        setIsEdit((prevState) => !prevState); 
         setMessage({})
         if(isEdit){
-            const carreraActualizada = await updateOneCareer(carrera);
-            console.log(carreraActualizada)
-            if(carreraActualizada.status === 200){
+            const upCareer = await updateOneCareer(carrera);
+            if(upCareer.status === 200){
                 setMessage({
-                    code: 200,
-                    msg: `${carreraActualizada.data.actCarrera.careerId} actualizada correctamente`
+                    code: upCareer.status,
+                    msg: `Carrera ID ${upCareer.data.updateCareer.careerId} actualizada correctamente`
                 })
                 
             } else{
                 setMessage({
-                    code: 400,
-                    msg: carreraActualizada.response.data.error})
+                    code: upCareer.status,
+                    msg: upCareer.statusText})
             }
         }
       }
+
     const navigate = useNavigate();
+
     const handleOnClickCondiciones = () => {
         navigate('/configuracion/condiciones')
+    }
+
+    const handleOnClickConfiguracionMaterias = () =>{
+        navigate('/configuracion/materias');
     }
 
     useEffect(() => {
@@ -51,19 +55,18 @@ function ConfiguracionCarrera() {
             setMessage({})
             const obtenerCarrera = async() => {
                 const carr = await getCurrentConfigCareer(IdCarrera);
-                console.log(carr)
                 
                 if(carr.status === 200){
-                    const career = carr.data.datosDeCarrera[0];
+                    const career = carr.data.careerData;
                     setMessage({
-                        code: 200,
+                        code: carr.status,
                         msg: `Datos de carrera ${career.careerId} obtenidos`
                     })
                 setCarrera(career);
                 }else{
                     setMessage({
-                        code: 400,
-                        msg: carr.response.data.error})
+                        code: carr.status,
+                        msg: carr.statusText})
                 } 
             }
             obtenerCarrera();
@@ -97,7 +100,6 @@ function ConfiguracionCarrera() {
         }else if(index === 1){
             updateCarrer.englishLevels = newValue
         }
-        console.log("Carrera Actualizada:", updateCarrer)
         setCarrera(updateCarrer)
     }
 
@@ -108,7 +110,6 @@ function ConfiguracionCarrera() {
         }else if(index === 1){
             updateCarrer.englishLevels = newValue
         }
-        console.log("Carrera Actualizada:", updateCarrer)
         setCarrera(updateCarrer)
     }
 
@@ -124,9 +125,7 @@ function ConfiguracionCarrera() {
                 flexDirection: { xs: 'column' },
                 alignItems: 'center',
                 bgcolor: 'background.default',
-                flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'center',
                 marginTop: 3,
                 marginBottom:3
             }}>
@@ -187,13 +186,15 @@ function ConfiguracionCarrera() {
                                 onClick={ handleOnClickCondiciones }
                                 >CONDICIONES</Button>  
                             <Button
-                                startIcon={<ListIcon />}>MATERIAS</Button>  
+                                startIcon={<ListIcon />}
+                                onClick={handleOnClickConfiguracionMaterias}
+                                >MATERIAS</Button>  
                         </ButtonGroup>
                     
                 </Box>
 
                 <Alert
-                    severity={message.code === 200 ? 'success': (message.code === 400 ? 'error':'')}
+                    severity={message.code === 200 ? 'success': (message.code === 204 ? 'error':'')}
                     variant='outlined'
                     sx={{m:1}}
                     >
