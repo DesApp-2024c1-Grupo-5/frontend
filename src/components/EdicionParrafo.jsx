@@ -5,6 +5,8 @@ import Stack from '@mui/material/Stack';
 import '../styles/SelectMultipleAR.css';
 
 const EdicionParrafo = ({ initialClave, initialTexto, onSave, onCancel }) => {
+const devolucionCarrera = []; 
+  const listadoSubjectDat = []; 
   const [clave, setClave] = useState(initialClave);
   const [texto, setTexto] = useState(initialTexto);
   const [condicionesSeleccionadas, setCondicionesSeleccionadas] = useState([]);
@@ -113,7 +115,7 @@ const EdicionParrafo = ({ initialClave, initialTexto, onSave, onCancel }) => {
                       <TarjetaCondicion
                           key={index}
                           condicion={condicion}
-                          devolucionCarreras={devolucionCarreras}
+                          devolucionCarreras={devolucionCarrera}
                           listadoSubjectData={listadoSubjectData}
                           onCheckboxChange={() => handleCheckboxChange(index)}
                           checkboxValue={checkboxValues[index]}
