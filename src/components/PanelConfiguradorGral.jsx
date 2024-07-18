@@ -25,13 +25,14 @@ export default function PanelConfiguradorGral(
                         }
                     }
                 >Materias para generar sugerencias: </FormLabel>
-                <TextField 
+                <TextField
+                    type='number'
                     value={suggestionThresholdRegularizedSubjects}
                     variant='standard'
                     className='container-config-item-input'
                     onChange={handleInputChange_1}
                     disabled={!isEdit}
-                    inputProps={{style:{fontSize: '14px', textAlign: 'center'}}}/>
+                    inputProps={{style:{fontSize: '14px', textAlign: 'center'}, min: 0}}/>
             </Box>
 
             <Box
@@ -45,12 +46,13 @@ export default function PanelConfiguradorGral(
                     }
                 >Minimo de materias sugeridas para inscribirse:</FormLabel>
                 <TextField 
+                    type='number'
                     value={minimumSubjectsRecommended}
                     variant='standard'
                     className='container-config-item-input' 
                     onChange={handleInputChange_2}
                     disabled={!isEdit}
-                    inputProps={{style:{fontSize: '14px', textAlign: 'center'}}}/>
+                    inputProps={{style:{fontSize: '14px', textAlign: 'center'}, min: 0}} />
             </Box>
 
             <Box

@@ -84,6 +84,7 @@ function ConfiguracionCarrera() {
     }
     const handleUpdateCarrerMinimunSubject = (newValue) => {
         const updatedCarrer = {...carrera};
+        console.log(newValue)
         updatedCarrer.minimumSubjectsRecommended = newValue
         setCarrera(updatedCarrer);
     }
