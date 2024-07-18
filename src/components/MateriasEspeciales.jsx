@@ -67,6 +67,8 @@ export default function MateriasEspeciales (
                         renderSubjects?.map( (register, pos )=> (
                         <div className="card-materia-item" key={pos} index={pos}>
                             <TextField
+                                type="number"
+                                inputProps={{min:1, max:7}}
                                 value={register.year}
                                 variant='standard'
                                 disabled={!isEdit}
